@@ -25,12 +25,8 @@
 
 ## Installation <a name="installation"></a>
 
-Beyond the Anaconda distribution of Python, insatallation of the following libraries is necessary:
--
--
--
+All of the requirements to run the application are captured in the requirements.txt
 
-The code should run with no issues using Python versions 3.*.
 
 ## Project Motivation<a name="motivation"></a>
 
