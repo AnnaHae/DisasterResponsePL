@@ -1,19 +1,5 @@
 # Disaster Response Pipeline Project
 
-### Instructions:
-1. Run the following commands in the project's root directory to set up your database and model.
-
-    - To run ETL pipeline that cleans data and stores in database
-        `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
-    - To run ML pipeline that trains classifier and saves
-        `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
-
-2. Run the following command in the app's directory to run your web app.
-    `python run.py`
-
-3. Go to http://0.0.0.0:3001/
-
-
 ### Table of Contents
 
 1. [Installation](#installation)
@@ -30,23 +16,20 @@ All of the requirements to run the application are captured in the requirements.
 
 ## Project Motivation<a name="motivation"></a>
 
-For this project I created a Machine Learning Pipeline to correctly classify disaster responses.
-
-
-The goal of the project is to apply data engineering skills to analyze the [Disaster Response Messages](https://www.figure-eight.com/dataset/combined-disaster-response-data/) dataset provided by Figure Eight, and build a web application that can help emergency workers analyze incoming messages and sort them into specific categories to speed up aid and contribute to more efficient distribution of people and other resources.
+The goal of the project is to apply data engineering skills to analyze the [Disaster Response Messages](https://www.figure-eight.com/dataset/combined-disaster-response-data/) dataset provided by Figure Eight, and build a web application that can help emergency workers analyze incoming messages. They get sorted into specific categories to speed up aid and contribute to more efficient distribution of people and other resources.
 
 
 ## File Descriptions <a name="files"></a>
 
 This project consists of three parts:
 
-1.ETL Pipeline
+<h2> 2. ETL Pipeline </h2>
     - Loads the datasets
     - Merges the two datasets
     - Cleans the data
     - Stores it in a SQLite database
 
-2. ML Pipeline
+<h2> 2. ML Pipeline </h2>
     - Loads data from the SQLite database
     - Splits the dataset into training and test sets
     - Builds a text processing and machine learning pipeline
@@ -54,12 +37,16 @@ This project consists of three parts:
     - Outputs results on the test set
     - Exports the final model as a pickle file
     
-3. Web App
+<h2> 3. Web app </h2>
     The web app displays visualization of the dataset that was used for training and validation of the ML-Pipeline.
+    
+    ![master3](img/training_data.png)
+    
     The emergency worker can input a message in the web app. By hitting the 'Classify-Message'-button, you get classification results in several categories
+    
+    
 
-
-You can find the file structure of the product below:
+You can find the file structure below:
 <pre>
 - app
 | - template
@@ -70,20 +57,24 @@ You can find the file structure of the product below:
 - data
 |- disaster_categories.csv  # data to process 
 |- disaster_messages.csv  # data to process
-|- process_data.py
+|- process_data.py # performs ETL process
 |- InsertDatabaseName.db   # database to save clean data to
 
+- img #images used for README
+
 - models
-|- train_classifier.py
+|- train_classifier.py #performs ML process
 |- classifier.pkl  # saved model 
+
+-requirements.txt #required installtions to run the process
 
 - README.md
 </pre>
 <a name="results"></a>
 
-![master](img/enter_message.png)
-![master2](img/result)
-![master3](img/training_data.png)
+
+
+
 ## Instructions<a name="results"></a>
 
 1. Run the following commands in the project's root directory to set up your database and model.
@@ -100,10 +91,14 @@ You can find the file structure of the product below:
 
 ## Results<a name="results"></a>
 
-The main findings of the code can be found at the post available [here](https://medium.com/@annatrumm/how-tech-makes-women-close-the-gender-pay-gap-2b306de4b965?sk=61e0c51593b98564e5805ad02f2eafcc).
+The created web app can classify emergency texts.
+The emergency worker can input a message in the web app. By hitting the 'Classify-Message'-button, you get classification results in several categories.
+
+![master](img/enter_message.png)
+![master2](img/result.png)
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
 
-Must give credit to FigureEight for the data and Udacity for preparation for the flask web app.
+Must give credit to FigureEight [Disaster Response Messages](https://www.figure-eight.com/dataset/combined-disaster-response-data/) for the data and Udacity for preparation for the flask web app.
 
 Otherwise, feel free to use the code here as you would like! 
