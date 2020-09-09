@@ -81,9 +81,9 @@ You can find the file structure of the product below:
 </pre>
 <a name="results"></a>
 
-![master](/Users/anna/Desktop/Bildschirmfoto 2020-09-09 um 11.06.34.png)
-
-
+![master](img/enter_message.png)
+![master2](img/result)
+![master3](img/training_data.png)
 ## Instructions<a name="results"></a>
 
 1. Run the following commands in the project's root directory to set up your database and model.
