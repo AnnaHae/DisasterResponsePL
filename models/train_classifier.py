@@ -108,7 +108,7 @@ def evaluate_model(model, X_test, Y_test):
 
 
 def save_model(model, model_filepath):
-     """saves ML-model as pickle file
+    """saves ML-model as pickle file
 
     Args:
     model: sklearn.pipeline, machine learning pipeline which is evaluated
