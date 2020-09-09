@@ -1,6 +1,8 @@
 import json
 import plotly
 import pandas as pd
+import nltk
+nltk.download('stopwords')
 
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
@@ -10,6 +12,7 @@ from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
+from nltk.corpus import stopwords
 
 
 app = Flask(__name__)
@@ -26,11 +29,11 @@ def tokenize(text):
     return clean_tokens
 
 # load data
-engine = create_engine('sqlite:///../data/YourDatabaseName.db')
-df = pd.read_sql_table('YourTableName', engine)
+engine = create_engine('sqlite:///../data/DisasterResponse.db')
+df = pd.read_sql_table('messages', engine)
 
 # load model
-model = joblib.load("../models/your_model_name.pkl")
+model = joblib.load("../models/classifier.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
@@ -38,30 +41,35 @@ model = joblib.load("../models/your_model_name.pkl")
 @app.route('/index')
 def index():
     
-    # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
-    genre_counts = df.groupby('genre').count()['message']
-    genre_names = list(genre_counts.index)
+    # extract data to visualize number of messages per category
     
-    # create visuals
-    # TODO: Below is an example - modify to create your own visuals
+    category_names=df.iloc[:,4:].columns
+
+
+    df_col=df[category_names]
+    message_counts=df_col.apply(pd.Series.value_counts)
+    message_counts=message_counts.loc[1,:].sort_values(ascending=False)
+    message_names = list(message_counts.index)
+    
+    # create visual: number of messages per category 
     graphs = [
         {
             'data': [
                 Bar(
-                    x=genre_names,
-                    y=genre_counts
+                    x=message_names,
+                    y=message_counts
                 )
             ],
 
             'layout': {
-                'title': 'Distribution of Message Genres',
+                'title': 'Distribution of messages',
                 'yaxis': {
-                    'title': "Count"
+                    'title': "Number of messages"
                 },
                 'xaxis': {
-                    'title': "Genre"
-                }
+                    'title': "category",
+                    'automargin':True
+                    }
             }
         }
     ]
@@ -70,12 +78,55 @@ def index():
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
     graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
     
+         
+    # extract data needed for visuals
+    # TODO: Below is an example - modify to extract data for your own visuals
+    
+    word_series = pd.Series(' '.join(df['message']).lower().split())
+    stop_words = word_series.isin(stopwords.words("english"))    
+    words_top8 = word_series[~stop_words].value_counts()[:10]
+    names_top8 = list(words_top8.index)
+
+
+    
+    # create visuals
+    # TODO: Below is an example - modify to create your own visuals
+    graphs2 = [
+        {
+            'data': [
+                Bar(
+                    x=names_top8,
+                    y=words_top8
+                )
+            ],
+
+            'layout': {
+                'title': 'Top 8 words used',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "words"
+                }
+            }
+        }
+    ]
+    
+    # encode plotly graphs in JSON
+    id2 = ["graph2-{}".format(i) for i, _ in enumerate(graphs2)]
+    graphJSON2 = json.dumps(graphs2, cls=plotly.utils.PlotlyJSONEncoder)
+    
+    
+    
     # render web page with plotly graphs
-    return render_template('master.html', ids=ids, graphJSON=graphJSON)
+    return render_template('master.html', ids=ids, graphJSON=graphJSON,id2=id2, graphJSON2=graphJSON2)
+
+
 
 
 # web page that handles user query and displays model results
 @app.route('/go')
+
 def go():
     # save user input in query
     query = request.args.get('query', '') 

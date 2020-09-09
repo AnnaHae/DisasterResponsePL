@@ -24,18 +24,18 @@ The goal of the project is to apply data engineering skills to analyze the [Disa
 This project consists of three parts:
 
 <h3> 2. ETL Pipeline </h3>
-    - Loads the datasets
-    - Merges the two datasets
-    - Cleans the data
-    - Stores it in a SQLite database
+<ul>- Loads the datasets</ul>
+<ul>- Merges the two datasets</ul>
+<ul>- Cleans the data</ul>
+<ul>- Stores it in a SQLite database</ul>
 
 <h3> 2. ML Pipeline </h3>
-    <ul>Loads data from the SQLite database</ul>
-    <ul>Splits the dataset into training and test sets</ul>
-    <ul>Builds a text processing and machine learning pipeline</ul>
-    <ul>Trains and tunes a model using GridSearchCV</ul>
-    <ul>Outputs results on the test set</ul>
-    <ul>Exports the final model as a pickle file</ul>
+<ul>- Loads data from the SQLite database</ul>
+<ul>- Splits the dataset into training and test sets</ul>
+<ul>- Builds a text processing and machine learning pipeline</ul>
+<ul>- Trains and tunes a model using GridSearchCV</ul>
+<ul>- Outputs results on the test set</ul>
+<ul>- Exports the final model as a pickle file</ul>
     
 <h3> 3. Web app </h3>
 The web app displays visualization of the dataset that was used for training and validation of the ML-Pipeline.
@@ -72,9 +72,6 @@ You can find the file structure below:
 </pre>
 <a name="results"></a>
 
-
-
-
 ## Instructions<a name="results"></a>
 
 1. Run the following commands in the project's root directory to set up your database and model.
@@ -92,13 +89,16 @@ You can find the file structure below:
 ## Results<a name="results"></a>
 
 The created web app can classify emergency texts.
-The emergency worker can input a message in the web app. By hitting the 'Classify-Message'-button, you get classification results in several categories.
+The emergency worker can input a message in the web app, looking like this:
 
 ![master](img/enter_message.png)
+
+By hitting the 'Classify-Message'-button, you get classification results in several categories:
+
 ![master2](img/result.png)
 
 ## Licensing, Authors, Acknowledgements<a name="licensing"></a>
 
-Must give credit to FigureEight [Disaster Response Messages](https://www.figure-eight.com/dataset/combined-disaster-response-data/) for the data and Udacity for preparation for the flask web app.
+Must give credit to [FigureEight](https://www.figure-eight.com) for the data and Udacity for preparation for the flask web app.
 
 Otherwise, feel free to use the code here as you would like! 

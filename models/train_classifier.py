@@ -22,8 +22,16 @@ from sklearn.model_selection import GridSearchCV
 from sqlalchemy import create_engine
 
 def load_data(database_filepath):
-    '''loads dataframe from database and splits it into X and Y
-        returns X,Y, category_names'''
+
+    """loads dataframe from database and splits it into X and Y
+
+    Args:
+    database_filepath: str, filepath to the database 
+
+    
+    Returns:
+    X,Y, category_names
+    """
     
     #create sqlite engine
     engine = create_engine('sqlite:///{}'.format(database_filepath))
@@ -41,6 +49,17 @@ def load_data(database_filepath):
     return X,Y,category_names
 
 def tokenize(text):
+    
+    """tokenizes text
+
+    Args:
+    text: str, text which should be tokenized
+
+    
+    Returns:
+    clean_tokens
+    """
+    
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -53,28 +72,57 @@ def tokenize(text):
 
 
 def build_model():
-    # build pipeline
+    
+    """builds machine learning pipeline with optimized parameters via GridSearch CV
+
+    
+    Returns:
+    pipeline
+    """
+
     pipeline = Pipeline([
     ('tfidf',TfidfVectorizer(tokenizer=tokenize)),
     ('moc',MultiOutputClassifier(KNeighborsClassifier()))
-    ])    
-    return pipeline
+    ])
+    parameters = {'moc__estimator__leaf_size': [30],
+             'moc__estimator__n_neighbors': [4]}
+
+    cv = GridSearchCV(pipeline, param_grid=parameters)
+
+    return cv
 
 
-def evaluate_model(model, X_test, Y_test, category_names):
-    # predict on test data
+def evaluate_model(model, X_test, Y_test):
+    """evaluates Machine Learning model
+
+    Args:
+    model: sklearn.pipeline, machine learning pipeline which is evaluated
+    X_test: np.array, test data - independent variables
+    Y_test: np.array, test data - dependent variables
+    
+    """
     Y_pred=pipeline.predict(X_test)
     for i in range (Y_test.shape[1]):
-    print('The classification report for {} is \n {}'.format(df.columns[(i+4)],classification_report(Y_test[:,i],Y_pred[:,i])))
+        print('The classification report for {} is \n {}'.format(df.columns[(i+4)],classification_report(Y_test[:,i],Y_pred[:,i])))
 
 
 
 def save_model(model, model_filepath):
+     """saves ML-model as pickle file
+
+    Args:
+    model: sklearn.pipeline, machine learning pipeline which is evaluated
+    model_filepath: str, path of where to save the picle file
+    
+    """
     filename = model_filepath
     pickle.dump(model, open(filename, 'wb'))
 
 
 def main():
+    """executes code and prints status while executing the steps of the program
+    """
+    
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
@@ -88,7 +136,7 @@ def main():
         model.fit(X_train, Y_train)
         
         print('Evaluating model...')
-        evaluate_model(model, X_test, Y_test, category_names)
+        evaluate_model(model, X_test, Y_test)
 
         print('Saving model...\n    MODEL: {}'.format(model_filepath))
         save_model(model, model_filepath)

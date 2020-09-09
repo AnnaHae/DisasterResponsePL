@@ -1,14 +1,26 @@
+
+
 import sys
 import pandas as pd
 import numpy as np
 from sqlalchemy import create_engine
+from langdetect import detect
+
 
 def load_data(messages_filepath, categories_filepath):
-    ''' loads datasets and merges them
-        returns: dataframe'''
+ 
+    """loads datasets and merges them
+
+    Args:
+    message_filepath: str, filepath to the messages data
+    categories_filepath: str, filepath to the categories data
+    
+    Returns:
+    merged dataframe
+    """
     
     #load message filepath
-    message=pd.read_csv(message_filepath)
+    messages=pd.read_csv(messages_filepath)
     
     # load categories filepath
     categories=pd.read_csv(categories_filepath)
@@ -19,8 +31,14 @@ def load_data(messages_filepath, categories_filepath):
     return df
 
 def clean_data(df):
-    ''' cleans dataframe
-        returns: dataframe'''
+     """Reads in and cleans dataframe from NaNs in the salary column of Stackoverflow Survey data
+
+    Args:
+    df: DataFrame, dataframe which has to be cleaned
+    
+    Returns:
+    cleaned dataframe
+    """
    
     # create a dataframe of the 36 individual category columns
     categories = df.categories.str.split(';',expand=True)
@@ -46,16 +64,40 @@ def clean_data(df):
     # drop duplicates
     df.drop_duplicates(inplace=True)
     
+    # drop 'child_alone' column
+    df.drop(['child_alone'],axis=1,inplace=True)
+    
+    # drop columns that are not detected as english language
+    for col in df.message:
+        try:
+            language=detect(col)
+            index_list=[]
+            if language != 'en':
+                df.drop(df[df['message'] == col],inplace=True)
+        except:
+            pass
+    
     return df
 
 def save_data(df, database_filename):
-    ''' saves the data into sqlite database'''
+     """saves dataframe into sqlite database
+
+    Args:
+    df: DataFrame, dataframe 
+    database_filename: str., name of the database
+  
+    """
     
-    engine = create_engine('sqlite:///{}'.format(database_filepath))
-    df.to_sql('messages', engine, index=False)
+    #create engine
+    engine = create_engine('sqlite:///{}'.format(database_filename))
+    
+    #save df to sqlite database
+    df.to_sql('messages', engine, index=False,if_exists='replace')
 
 
 def main():
+    """executes code and prints status while executing the steps of the program
+    """
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
