@@ -33,6 +33,8 @@ All of the requirements to run the application are captured in the requirements.
 For this project I created a Machine Learning Pipeline to correctly classify disaster responses.
 
 
+The goal of the project is to apply data engineering skills to analyze the [Disaster Response Messages](https://www.figure-eight.com/dataset/combined-disaster-response-data/) dataset provided by Figure Eight, and build a web application that can help emergency workers analyze incoming messages and sort them into specific categories to speed up aid and contribute to more efficient distribution of people and other resources.
+
 
 ## File Descriptions <a name="files"></a>
 
@@ -58,6 +60,7 @@ This project consists of three parts:
 
 
 You can find the file structure of the product below:
+<pre>
 - app
 | - template
 | |- master.html  # main page of web app
@@ -75,8 +78,10 @@ You can find the file structure of the product below:
 |- classifier.pkl  # saved model 
 
 - README.md
+</pre>
+<a name="results"></a>
 
-<a name="results"></a>/Users/anna/Desktop/Bildschirmfoto 2020-09-09 um 11.06.34.png 
+![master](/Users/anna/Desktop/Bildschirmfoto 2020-09-09 um 11.06.34.png)
 
 
 ## Instructions<a name="results"></a>
